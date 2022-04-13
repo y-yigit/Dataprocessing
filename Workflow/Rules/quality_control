@@ -1,0 +1,15 @@
+# -*- python -*-
+
+rule fastqc:
+    input:
+        "Resources/sratoolkitoutput/fasta/{sample}.fastq"
+    output:
+        html="Results/fastqc/{sample}.html",
+        zip="Results/qc/fastqc/{sample}_fastqc.zip" 
+    params: "--quiet"
+    log:
+        "Logs/fastqc/{sample}.log"
+    threads: 1
+    wrapper:
+        "v1.3.2/bio/fastqc"
+

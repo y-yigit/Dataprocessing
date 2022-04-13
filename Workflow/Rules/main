@@ -1,0 +1,14 @@
+# -*- python -*-
+
+workdir: "/home/ubuntu/Desktop/Dataprocessing/"
+configfile: "Config/config.yaml"
+SAMPLES = config["samples"]
+
+include: "quality_control"
+
+rule all:
+    input:
+        # Change the input to the output of the last rule or else it will do nothing
+        expand("Results/fastqc/{sample}.html", sample=SAMPLES)
+
+

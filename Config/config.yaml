@@ -1,0 +1,7 @@
+#configfile config.yaml
+
+samples:
+    - SRR5646572
+    - SRR5646573
+    - SRR5646574
+    - SRR5646575
