@@ -1,14 +1,20 @@
 # -*- python -*-
 
+#import snakemake.utils
+
 workdir: "/home/ubuntu/Desktop/Dataprocessing/"
 configfile: "Config/config.yaml"
 SAMPLES = config["samples"]
 
+import snakemake.utils
 include: "quality_control"
+include: "quality_filtering"
 
 rule all:
     input:
         # Change the input to the output of the last rule or else it will do nothing
-        expand("Results/fastqc/{sample}.html", sample=SAMPLES)
-
-
+        #expand("Results/fastqc/{sample}.html", sample=SAMPLES)
+        #expand("Results/fastp/trimmed{sample}.list", sample=SAMPLES)
+        #expand("temp/FilteredIDs{sample}.fastq", sample=SAMPLES)
+        #expand("Results/filtered/{sample}_filtered.fastq", sample=SAMPLES)
+        expand("Results/fastqc/filtered_{sample}.html", sample=SAMPLES)

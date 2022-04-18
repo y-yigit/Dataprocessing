@@ -1,0 +1,53 @@
+# -*- python -*-
+
+# Test value for l, change at the end
+# Also change export and file paths
+
+rule fastp_se:
+    input:
+        sample=["Resources/sratoolkitoutput/fasta/{sample}.fastq"]
+    output:
+        trimmed="Results/fastp/trimmed{sample}.fastq",
+        html="Results/fastp/{sample}.html",
+        json="Results/fastp/{sample}.json"
+    log:
+        "Logs/fastp/se/{sample}.log"
+    params:
+        extra="-b 9 -q 10 -L",
+    threads: 1
+    wrapper:
+        "v1.3.2/bio/fastp"
+        
+rule extract_read_id:
+    input:
+        "Results/fastp/trimmed{sample}.fastq"
+    output:
+        "temp/FilteredIDs{sample}.list"
+    shell:
+        "awk 'FNR%4==1{{print $1}}' {input}"
+        "| sed 's/@//' - > {output}"
+
+rule filter_fastq:
+    input:
+        fastq="Resources/sratoolkitoutput/fasta/{sample}.fastq",
+        ids="temp/FilteredIDs{sample}.list"
+    output:
+        "Results/filtered/{sample}_filtered.fastq"
+    shell:
+        "seqtk subseq {input.fastq} {input.ids}"
+        "|sed 's/ /#/g; s/\//#/g' -> {output}"
+
+rule fastqc_filtered:
+    input:
+        "Results/filtered/{sample}_filtered.fastq"
+    output:
+        html="Results/fastqc/filtered_{sample}.html",
+        zip="Results/qc/fastqc/filtered_{sample}_fastqc.zip" 
+    params: "--quiet"
+    log:
+        "Logs/fastqc/{sample}.log"
+    threads: 1
+    wrapper:
+        "v1.3.2/bio/fastqc"
+# Results show that the quality filter is too low
+

@@ -5,3 +5,30 @@ samples:
     - SRR5646573
     - SRR5646574
     - SRR5646575
+
+# Sequence of the 3' adapter that was used for iCLIP library preparation
+adapter.seq: "AGATCGGAAGAGCGGTTCAG"
+# x + y + z
+# x = length of the first UMI segment
+x: 3
+# y = length of the experimental barcode
+x:  4
+# z = length of the second UMI segment
+x: 2
+barcodeLength: 1
+# Read length from high-throughput sequencing, this is a test value
+readLength: 1000
+# Minimum length to retain reads after trimming
+minReadLength: 15
+
+# Maximum possible read length after trimming
+# This is a test value, the max read length formula is:
+# readLength - (x+y+z), readLength - 9
+maxReadLength: 30
+
+# Minimum quality (Phred score per base) in the barcode region 
+# to ensure high confidence for demultiplexing and deduplication
+minBaseQuality: 10
+# STAR genome index specific to the organism used in the experiment.
+# Test value
+genomeMappingIndex: 1
